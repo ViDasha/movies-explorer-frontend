@@ -1,0 +1,27 @@
+.navigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navigation__registration-button {
+  border: none;
+  background-color: transparent;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 0;
+}
+
+.navigation__login-button {
+  border: none;
+  width: 76px;
+  height: 32px;
+  background: #2BE080;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  margin-left: 50px;
+  padding: 0;
+}

@@ -1,0 +1,17 @@
+.header {
+  margin: 18px 70px 18px;
+}
+
+.header__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__logo {
+  width: 34px;
+  height: 34px;
+}
+
+.header__link {
+  
+}

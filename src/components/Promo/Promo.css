@@ -1,0 +1,22 @@
+.promo {
+  
+}
+
+.promo__section {
+  
+}
+
+.promo__title {
+  max-width: 626px;
+  color: #fff;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  font-size: 40px;
+  line-height: 52px;
+}
+
+.promo__img {
+  width: 722px;
+  height: 244px;
+}
