@@ -1,5 +1,5 @@
 .promo {
-  
+  background-color: #073042;
 }
 
 .promo__section {
@@ -22,6 +22,6 @@
 .promo__img {
   width: 722px;
   height: 244px;
-  margin: 102px 70px 0 0;
+  margin: 102px 70px 60px 0;
   align-self: flex-end;
 }
