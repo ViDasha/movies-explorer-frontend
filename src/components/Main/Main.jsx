@@ -13,8 +13,8 @@ function Main() {
       <Header />
       <Promo />
       <AboutProject />
-      {/*
       <Techs />
+      {/*
       <AboutMe />
       <Portfolio />
       <Footer />
