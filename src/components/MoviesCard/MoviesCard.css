@@ -33,32 +33,30 @@
   color: #A0A0A0;
 }
 
-.moviescard__like {
-  background-image: url(../../images/like.svg);
+.moviescard__button {
   width: 14px;
   height: 12px;
   border-style: none;
   background-color: transparent;
   padding: 0;
+}
+
+.moviescard__button:hover {
+  cursor: pointer;
+}
+
+.moviescard__like {
+  background-image: url(../../images/like.svg);
 }
 
 .moviescard__dislike {
   background-image: url(../../images/dislike.png);
-  width: 14px;
-  height: 12px;
-  border-style: none;
-  background-color: transparent;
-  padding: 0;
 }
 
-.movies-card__delete {
+.moviescard__delete {
   background-image: url(../../images/cross.svg);
-  width: 14px;
-  height: 12px;
-  border-style: none;
-  background-color: transparent;
-  padding: 0;
 }
+
 
 .moviescard__img {
   width: 220px;

@@ -1,5 +1,6 @@
 .moviescardlist {
   margin: 80px 70px 80px;
+  min-height: 702px;
 }
 
 .moviescardlist__grid {
