@@ -14,10 +14,10 @@ function App() {
         <Route exact path="/">
           <Main />
         </Route>
-        {/*
         <Route path="/movies">
           <Movies />
         </Route>
+                {/*
         <Route path="/saved-movies">
           <SavedMovies />
         </Route>
