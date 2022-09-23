@@ -11,7 +11,7 @@ function MoviesCardList() {
         )}
       </div>
       <Route path="/movies">
-        <button className="moviescardlist__button">Ещё</button>
+        <button className="moviescardlist__button" type="button">Ещё</button>
       </Route>
     </section>
 )}

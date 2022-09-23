@@ -16,10 +16,10 @@ function MoviesCard() {
           <h3 className="moviescard__title">33 слова о дизайне</h3>
           <p className="moviescard__time">1ч 42м</p>
           <Route path='/movies'>
-            <button className={`moviescard__button ${ isLiked ? 'moviescard__like' : 'moviescard__dislike'}`} onClick={handleCardButton}></button>
+            <button className={`moviescard__button ${ isLiked ? 'moviescard__like' : 'moviescard__dislike'}`} onClick={handleCardButton} type="button"></button>
           </Route>
           <Route path='/saved-movies'>
-            <button className='moviescard__button moviescard__delete' onClick={handleCardButton}></button>
+            <button className='moviescard__button moviescard__delete' onClick={handleCardButton} type="button"></button>
           </Route>
         </div>
         <img src={film} className="moviescard__img" alt="Белая машина, девушка с фотоаппаратом и ребята"/>
