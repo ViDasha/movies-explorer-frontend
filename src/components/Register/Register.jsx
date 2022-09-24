@@ -19,7 +19,7 @@ function Register(){
           <p className="login__item-type">Пароль</p>
           <input id="password" name="password" type="password" className="login__item login__item_type_error" minLength="2" maxLength="40" required/>
           <span className="login__item-error">Что-то пошло не так...</span>
-          <button type="submit" aria-label="Зарегистрироваться" name="save" className="login__button-save">Зарегистрироваться</button>
+          <button type="submit" aria-label="Зарегистрироваться" name="save" className="login__button-save login__button-save_type_register">Зарегистрироваться</button>
         </form>
         <div className="login__signin">
           <p className="login__question">Уже зарегистрированы?</p>

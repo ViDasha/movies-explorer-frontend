@@ -23,7 +23,7 @@
 }
 
 .notfound__back {
-  margin: 184px 0 0;
+  margin: 184px 0 60px;
   padding: 0;
   font-style: normal;
   font-weight: 400;
@@ -38,4 +38,34 @@
 .notfound__back:hover {
   cursor: pointer;
   opacity: .7;
+}
+
+@media screen and (max-width: 780px) {
+  .notfound__title {
+    margin-top: 408px;
+  }
+
+  .notfound__back {
+    margin-bottom: 222px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .notfound__title {
+    margin-top: 329px;
+    font-size: 80px;
+    line-height: 97px;
+  }
+
+  .notfound__description {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .notfound__back {
+    margin: 284px 0 30px;
+    font-size: 12px;
+    line-height: 15px;
+  }
 }
