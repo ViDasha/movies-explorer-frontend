@@ -21,17 +21,15 @@ function App() {
         <Route path="/saved-movies">
           <SavedMovies />
         </Route>
-        {/*
         <Route path="/profile">
           <Profile />
-        </Route>           
+        </Route>      
         <Route path="/signin">
           <Login />
         </Route>
         <Route path="/signup">
           <Register />
         </Route>
-        */}
         <Route path="*">
           <NotFound />
         </Route>
