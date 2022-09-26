@@ -15,6 +15,7 @@ function Portfolio() {
               <img className="portfolio__image" src={arrow} alt="Стрелка-ссылка"></img>
           </a>
         </li>
+        <div className='portfolio__border' />
         <li>
           <a
             href="https://github.com/ViDasha/russian-travel"
@@ -24,6 +25,7 @@ function Portfolio() {
             <img className="portfolio__image" src={arrow} alt="Стрелка-ссылка"></img>
           </a>
         </li>
+        <div className='portfolio__border' />
         <li>
           <a
             href="https://github.com/ViDasha/react-mesto-api-full"

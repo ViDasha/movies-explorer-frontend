@@ -25,3 +25,47 @@
   margin: 102px 70px 60px 0;
   align-self: flex-end;
 }
+
+@media screen and (max-width: 850px) {
+  .promo__section {
+    align-items: center;
+    padding: 300px 44px 70px;
+  }
+
+  .promo__title {
+    text-align: center;
+    margin: 0;
+  }
+
+  .promo__img {
+    margin: 0;
+    width: 680px;
+    height: 230px;
+    margin-top: 140px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .promo {
+    min-height: 630px;
+    overflow: hidden;
+  }
+
+  .promo__title {
+    max-width: 300px;
+    font-size: 31px;
+    line-height: 39px;
+  }
+
+  .promo__section {
+    padding: 183px 10px 40px;
+    position: relative;
+  }
+
+  .promo__img {
+    margin: 0;
+    position: absolute;
+    top: 360px;
+    right: -180px;
+  }
+}
