@@ -15,6 +15,11 @@
   flex-direction: column;
 }
 
+.moviescard__description {
+  display: flex;
+  flex-direction: column;
+}
+
 .moviescard__title {
   margin: 0;
   font-style: normal;
@@ -57,9 +62,36 @@
   background-image: url(../../images/cross.svg);
 }
 
-
 .moviescard__img {
   width: 220px;
   height: 122px;
   object-fit: cover;
+}
+
+@media screen and (max-width: 450px) {
+  .moviescard__container {
+    flex-direction: column-reverse;
+    max-width: 300px;
+  }
+
+  .moviescard__img {
+    width: 300px;
+    height: 168px;
+  }
+
+  .moviescard__info {
+    margin: 14px 16px 14px 12px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .moviescard__title {
+    font-size: 12px;
+    line-height: 15px;
+    min-width: 228px;
+    margin-right: 30px;
+  }
+
+  .moviescard__time {
+    margin: 8px 0 0;
+  }
 }

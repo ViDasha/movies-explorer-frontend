@@ -5,6 +5,7 @@
 
 .moviescardlist__grid {
   display: grid;
+  align-items: center;
   gap: 40px;
 }
 
@@ -28,3 +29,27 @@
     cursor: pointer;
     opacity: 0.6;
   }
+
+@media screen and (max-width: 780px) {
+  .moviescardlist {
+    margin: 70px 30px 80px;
+  }
+
+  .moviescardlist__button {
+    margin-top: 80px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .moviescardlist {
+    margin: 50px 10px 80px;
+  }
+
+  .moviescardlist__button {
+    margin-top: 70px;
+  }
+
+  .moviescardlist__grid {
+    justify-content: center;
+  }
+}

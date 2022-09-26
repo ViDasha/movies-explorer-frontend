@@ -30,3 +30,13 @@
   font-size: 12px;
   line-height: 18px;
 }
+
+@media screen and (max-width: 780px) {
+
+}
+
+@media screen and (max-width: 450px) {
+  .filtercheckbox {
+    margin: 45px 0 44px;
+  }
+}

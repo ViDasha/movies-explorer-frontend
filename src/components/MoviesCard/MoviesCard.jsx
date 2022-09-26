@@ -13,8 +13,10 @@ function MoviesCard() {
     <section className="moviescard">
       <div className="moviescard__container">
         <div className="moviescard__info">
-          <h3 className="moviescard__title">33 слова о дизайне</h3>
-          <p className="moviescard__time">1ч 42м</p>
+          <div className="moviescard__description">
+            <h3 className="moviescard__title">33 слова о дизайне</h3>
+            <p className="moviescard__time">1ч 42м</p>
+          </div>
           <Route path='/movies'>
             <button className={`moviescard__button ${ isLiked ? 'moviescard__like' : 'moviescard__dislike'}`} onClick={handleCardButton} type="button"></button>
           </Route>
