@@ -11,7 +11,7 @@ function AboutMe() {
           <h4 className="aboutme__job">Фронтенд-разработчик, 27 лет</h4>
           <p className="aboutme__text">Я родилаcь в Ярославле и в 2013 году переехала в Москву. Закончила МГУ, факультет Вычислительной математики и информатики.
            Изначально работала C# разработчиком, но сейчас руковожу командой разработки приложения в банке. Веб-программирование изучаю для себя, и возможно переквалифицируюсь на смежную работу или полностью веб.</p>
-          <a href="https://github.com/ViDasha" className="aboutme__link" target='blank'>GitHub</a>
+          <a href="https://github.com/ViDasha" className="aboutme__link" target="blank">GitHub</a>
         </div>
         <img className="aboutme__avatar" src={avatar} alt="Фото автора"/>
       </div>

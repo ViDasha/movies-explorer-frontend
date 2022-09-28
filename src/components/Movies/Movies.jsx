@@ -4,10 +4,10 @@ import SearchForm from '../SearchForm/SearchForm.jsx';
 import MoviesCardList from '../MoviesCardList/MoviesCardList.jsx';
 import Footer from '../Footer/Footer.jsx';
 
-function Movies() {
+function Movies({loggedIn}) {
   return (
     <main className="movies">
-      <Header />
+      <Header loggedIn={loggedIn}/>
       <SearchForm />
       <MoviesCardList />
       <Footer />

@@ -9,6 +9,8 @@ import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
 
 function App() {
+  const loggedIn = true;
+
   return (
     <div className="page">
       <Switch>
@@ -16,13 +18,13 @@ function App() {
           <Main />
         </Route>
         <Route path="/movies">
-          <Movies />
+          <Movies loggedIn={loggedIn}/>
         </Route>
         <Route path="/saved-movies">
-          <SavedMovies />
+          <SavedMovies loggedIn={loggedIn}/>
         </Route>
         <Route path="/profile">
-          <Profile />
+          <Profile loggedIn={loggedIn}/>
         </Route>      
         <Route path="/signin">
           <Login />

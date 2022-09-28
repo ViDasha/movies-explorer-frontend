@@ -6,10 +6,10 @@ function SearchForm() {
     <section className="searchform">
       <form className="searchform__form">
         <input
-          name='movie'
-          id='movie'
-          type='text'
-          placeholder='Фильм'
+          name="movie"
+          id="movie"
+          type="text"
+          placeholder="Фильм"
           className="searchform__input"
           required>
         </input>

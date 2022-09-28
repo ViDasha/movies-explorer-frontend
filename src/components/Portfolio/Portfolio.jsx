@@ -10,27 +10,27 @@ function Portfolio() {
           <a
             href="https://github.com/ViDasha/how-to-learn"
               className="portfolio__item"
-              target='blank'>
+              target="blank">
               <p className="portfolio__link">Статичный сайт</p>
               <img className="portfolio__image" src={arrow} alt="Стрелка-ссылка"></img>
           </a>
         </li>
-        <div className='portfolio__border' />
+        <div className="portfolio__border" />
         <li>
           <a
             href="https://github.com/ViDasha/russian-travel"
             className="portfolio__item"
-            target='blank'>
+            target="blank">
             <p className="portfolio__link">Адаптивный сайт</p>
             <img className="portfolio__image" src={arrow} alt="Стрелка-ссылка"></img>
           </a>
         </li>
-        <div className='portfolio__border' />
+        <div className="portfolio__border" />
         <li>
           <a
             href="https://github.com/ViDasha/react-mesto-api-full"
             className="portfolio__item"
-            target='blank'>
+            target="blank">
             <p className="portfolio__link">Одностраничное приложение</p>
             <img className="portfolio__image" src={arrow} alt="Стрелка-ссылка"></img>
           </a>

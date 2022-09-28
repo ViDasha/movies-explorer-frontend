@@ -11,7 +11,7 @@ function Footer() {
             <a
               href="https://practicum.yandex.ru/"
               className="footer__link"
-              target='blank'>
+              target="blank">
               Яндекс.Практикум
             </a>
           </li>
@@ -19,7 +19,7 @@ function Footer() {
             <a
               href="https://github.com/"
               className="footer__link"
-              target='blank'>
+              target="blank">
               GitHub
             </a>
           </li>

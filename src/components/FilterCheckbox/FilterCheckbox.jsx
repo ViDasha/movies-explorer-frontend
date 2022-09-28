@@ -9,7 +9,7 @@ function FilterCheckbox() {
 
   return (
     <div className="filtercheckbox">
-      <button className={`${checkbox ? 'filtercheckbox__button' : 'filtercheckbox__button_active'}`} type="button" onClick={toggleCheckbox}></button>
+      <button className={`${checkbox ? "filtercheckbox__button" : "filtercheckbox__button_active"}`} type="button" onClick={toggleCheckbox}></button>
       <p className="filtercheckbox__name">Короткометражки</p>
     </div>
 )}

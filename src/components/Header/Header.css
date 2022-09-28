@@ -3,6 +3,10 @@
   background-color: #073042;
 }
 
+.header_nobackground {
+  background-color: transparent;
+}
+
 .header__container {
   display: flex;
   justify-content: space-between;
@@ -14,6 +18,20 @@
   height: 34px;
 }
 
-.header__link {
-  
+.header__logo:hover {
+  opacity: .7;
+}
+
+@media screen and (max-width: 850px) {
+  .header__container {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .header__container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
 }
