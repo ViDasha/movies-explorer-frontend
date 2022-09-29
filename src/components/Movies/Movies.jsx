@@ -6,12 +6,14 @@ import Footer from '../Footer/Footer.jsx';
 
 function Movies({loggedIn}) {
   return (
-    <main className="movies">
+    <div className="movies">
       <Header loggedIn={loggedIn}/>
-      <SearchForm />
-      <MoviesCardList />
+      <main className="movies__main">
+        <SearchForm />
+        <MoviesCardList />
+      </main>
       <Footer />
-    </main>
+    </div>
 )}
 
 export default Movies;

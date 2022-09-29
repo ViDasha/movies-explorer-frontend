@@ -6,12 +6,14 @@ import Footer from '../Footer/Footer.jsx';
 
 function SavedMovies({loggedIn}) {
   return (
-    <main className="savedmovies">
+    <div className="savedmovies">
       <Header loggedIn={loggedIn}/>
-      <SearchForm />
-      <MoviesCardList />
+      <main className="savedmovies__main">
+        <SearchForm />
+        <MoviesCardList />
+      </main>
       <Footer />
-    </main>
+    </div>
 )}
 
 export default SavedMovies;

@@ -9,15 +9,17 @@ import Footer from "../Footer/Footer";
 
 function Main() {
   return (
-    <main className="content">
+    <div className="content">
       <Header />
-      <Promo />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
-      <Portfolio />
+      <main className="content__main">
+        <Promo />
+        <AboutProject />
+        <Techs />
+        <AboutMe />
+        <Portfolio />
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 }
 
