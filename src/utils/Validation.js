@@ -1,30 +1,40 @@
-import { useState, useCallback } from "react";
+import { regulars, errorMessages } from "../utils/constants";
 
-//хук управления формой и валидации формы
-function useFormWithValidation() {
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
-  const [isValid, setIsValid] = useState(false);
+function checkValidition(name, value) {
+  let isValid = true;
+  let errorMessage = '';
+  let regular = '';
 
-  const handleChange = (event) => {
-    const target = event.target;
-    const name = target.name;
-    const value = target.value;
-    setValues({ ...values, [name]: value });
-    setErrors({ ...errors, [name]: target.validationMessage });
-    setIsValid(target.closest("form").checkValidity());
-  };
+  if (!value) {
+    errorMessage = errorMessages.requiredField;
+    isValid = false;
+    return { isValid, errorMessage};
+  }
 
-  const resetForm = useCallback(
-    (newValues = {}, newErrors = {}, newIsValid = false) => {
-      setValues(newValues);
-      setErrors(newErrors);
-      setIsValid(newIsValid);
-    },
-    [setValues, setErrors, setIsValid]
-  );
+  switch (name) {
+    case "name": 
+        regular = regulars.name;
+        if (!regular.test(String(value).toLowerCase())) {
+          errorMessage = errorMessages.incorrectName;
+          isValid = false;
+        }
+        break;
+    case "email":
+        regular = regulars.email;
+        if (!regular.test(String(value).toLowerCase())) {
+          errorMessage = errorMessages.incorrectEmail;
+          isValid = false;
+        }
+        break;
+    default:
+      if (value.length < 8 || value.length > 40) {
+        errorMessage = errorMessages.incorrectPassword;
+        isValid = false;
+        break;
+      }
+  }
 
-  return { values, handleChange, errors, isValid, resetForm };
+  return { isValid, errorMessage};
 }
 
-export default useFormWithValidation;
+export default checkValidition;
