@@ -10,6 +10,7 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute.js';
+import InfoTooltip from '../InfoTooltip/InfoTooltip';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -17,7 +18,8 @@ function App() {
   const history = useHistory();
  // const navigate = Redirect();
   const [infoTooltipOpen, setInfoTooltipOpen] = useState(false);
-  const [isSymbol, setIsSymbol] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -32,7 +34,7 @@ function App() {
         console.log(err); // выведем ошибку в консоль
       });
   // позже здесь тоже нужно будет проверить токен пользователя!
-    handleTokenCheck();
+  //  handleTokenCheck();
     }
   }, [loggedIn]);
 
@@ -59,7 +61,7 @@ function App() {
         default: {}
       }
       setInfoTooltipOpen(true);
-      setIsSymbol(false);
+      setIsSuccess(false);
     });
   } 
 
@@ -80,7 +82,7 @@ function App() {
         default: {}
       }
       setInfoTooltipOpen(true);
-      setIsSymbol(false);
+      setIsSuccess(false);
     });
   }
 
@@ -132,7 +134,7 @@ function App() {
     .then((userInfo) => {
       setCurrentUser(userInfo);
       setInfoTooltipOpen(true);
-      setIsSymbol(true);
+      setIsSuccess(true);
       //setMessage("Данные профиля успешно изменены.");
       this.closeAllPopups();
     })
@@ -177,11 +179,18 @@ function App() {
             path="/profile"
             component={Profile}
             loggedIn={loggedIn}
+            onUpdateUser={handleUpdateUser}
+            onSignOut={handleOnSignOut}
           />
           <Route path="*">
             <NotFound />
           </Route>
         </Switch>
+        <InfoTooltip 
+          isOpen={infoTooltipOpen} 
+          onClose={closeInfoTooltip} 
+          isSuccess={isSuccess}
+          message={message}/>
       </div>
     </CurrentUserContext.Provider>
   );
