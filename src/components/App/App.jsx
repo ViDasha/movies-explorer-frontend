@@ -135,8 +135,7 @@ function App() {
       setCurrentUser(userInfo);
       setInfoTooltipOpen(true);
       setIsSuccess(true);
-      //setMessage("Данные профиля успешно изменены.");
-      this.closeAllPopups();
+      setMessage("Данные профиля успешно изменены");
     })
     .catch((err) => {
       console.log(err); // выведем ошибку в консоль
