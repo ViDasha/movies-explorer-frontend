@@ -11,33 +11,34 @@ import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
 import ProtectedRoute from '../ProtectedRoute.js';
 import InfoTooltip from '../InfoTooltip/InfoTooltip';
+import { errorMessages, successMessages, nameErrors } from '../../utils/constants';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const history = useHistory();
- // const navigate = Redirect();
+  const [savedMoviesList, setSavedMoviesList] = useState([]);
   const [infoTooltipOpen, setInfoTooltipOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [message, setMessage] = useState("");
+  const [successRequest, setSuccessRequest] = useState(false);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      mainApi.getUserProfile()
-      .then((currentUser) => {
-        setCurrentUser(currentUser);
-        setLoggedIn(true);
+    if (loggedIn) {
+      mainApi.getMovies(jwt)
+      .then((data) => {
+        setSavedMoviesList(data);
       })
-      .catch(err => {
-      // тут ловим ошибку
-        console.log(err); // выведем ошибку в консоль
-      });
-  // позже здесь тоже нужно будет проверить токен пользователя!
-  //  handleTokenCheck();
+      .catch((err) => {
+        console.log(err)
+      })
     }
   }, [loggedIn]);
 
+  useEffect (() => {
+    handleTokenCheck();
+  }, []);
 
   function handleOnLogin(password, email) {
     mainApi.authorize(password, email)
@@ -45,17 +46,22 @@ function App() {
       localStorage.setItem("jwt", data.token);
       setLoggedIn(true);
       handleTokenCheck();
-      //Redirect("/movies");
       history.push("/movies");
     })
     .catch((err) => {
       switch (err){
-        case 'Ошибка: 400': {
-          console.log('Не передано одно из полей');
+        case nameErrors.er400: {
+          console.log(errorMessages.incorrectField);
+          setInfoTooltipOpen(true);
+          setIsSuccess(false);
+          setMessage(errorMessages.incorrectField);
           break;
         }
-        case 'Ошибка: 401': {
-          console.log('Пользователь с email не найден');
+        case nameErrors.er401: {
+          console.log(errorMessages.userNotFound);
+          setInfoTooltipOpen(true);
+          setIsSuccess(false);
+          setMessage(errorMessages.userNotFound);
           break;
         }
         default: {}
@@ -70,13 +76,22 @@ function App() {
     .then((res) => {
       if (res) {
         handleOnLogin(password, email);
-        history.push("/signin");
       }
     })
     .catch((err) => {
       switch (err){
-        case 'Ошибка: 400': {
-          console.log('Некорректно заполнено одно из полей');
+        case nameErrors.er400: {
+          console.log(errorMessages.incorrectField);
+          setInfoTooltipOpen(true);
+          setIsSuccess(false);
+          setMessage(errorMessages.incorrectField);
+          break;
+        }
+        case nameErrors.er409: {
+          console.log(errorMessages.userAlreadyExists);
+          setInfoTooltipOpen(true);
+          setIsSuccess(false);
+          setMessage(errorMessages.userAlreadyExists);
           break;
         }
         default: {}
@@ -98,25 +113,30 @@ function App() {
           setCurrentUser(data);
           // авторизуем пользователя
           setLoggedIn(true);
-           // this.props.history.push("/");
           }
         })
       .catch((err) => {
+        setCurrentUser({});
         setLoggedIn(false);
+        localStorage.clear();
         switch (err){
-          case 'Ошибка: 400': {
-            console.log('Токен не передан или передан не в том формате');
+          case nameErrors.er400: {
+            console.log(errorMessages.invalidToken);
             break;
           }
-          case 'Ошибка: 401': {
-            console.log('Переданный токен некорректен');
+          case nameErrors.er401: {
+            console.log(errorMessages.incorrectToken);
             break;
           }
           default: {}
         }
-      });
+      })
+      .finally(() => setSuccessRequest(true));
     } else {
+      setSuccessRequest(true);
+      setCurrentUser({});
       setLoggedIn(false);
+      localStorage.clear();
     }
   }
 
@@ -125,19 +145,23 @@ function App() {
     setCurrentUser({});
     setLoggedIn(false);
     localStorage.clear();
-    history.push('/signin');
+    history.push('/');
   }
 
   function handleUpdateUser(inputValues) {
     const jwt = localStorage.getItem('jwt');
     mainApi.patchUserInfo(inputValues, jwt)
-    .then((userInfo) => {
-      setCurrentUser(userInfo);
+    .then((resultValue) => {
+      setCurrentUser(resultValue);
+      //setCurrentUser(userInfo);
       setInfoTooltipOpen(true);
       setIsSuccess(true);
-      setMessage("Данные профиля успешно изменены");
+      setMessage(successMessages.userProfile);
     })
     .catch((err) => {
+      setInfoTooltipOpen(true);
+      setIsSuccess(false);
+      setMessage(errorMessages.serverError);
       console.log(err); // выведем ошибку в консоль
     })
   }
@@ -146,33 +170,81 @@ function App() {
     setInfoTooltipOpen(false);
   }
 
+  function handleSaveMovie(movie) {
+    const jwt = localStorage.getItem('jwt');
+    mainApi.saveMovie(movie, jwt)
+    .then((newMovie) => {
+      setSavedMoviesList([newMovie, ...savedMoviesList]);
+    })
+    .catch((err) => {
+      setInfoTooltipOpen(true);
+      setIsSuccess(false);
+      setMessage(errorMessages.serverError);
+      console.log(err); // выведем ошибку в консоль
+    })
+  }
+
+function handleDeleteMovie(movie) {
+    const savedMovie = savedMoviesList.find((item) => item.movieId === movie.movieId);
+    const jwt = localStorage.getItem('jwt');
+    mainApi.deleteMovie(savedMovie._id, jwt)
+      .then(() => {
+        const newMoviesList = savedMoviesList.filter((m) => m.movieId !== movie.movieId);
+          setSavedMoviesList(newMoviesList);
+        })
+      .catch((err) => {
+        setInfoTooltipOpen(true);
+        setIsSuccess(false);
+        setMessage(errorMessages.serverError);
+        console.log(err); // выведем ошибку в консоль
+      })
+}
+
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    successRequest && (<CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Switch>
           <Route exact path="/">
             <Main 
               loggedIn={loggedIn}/>
           </Route>      
-          <Route path="/signin">
+          {!loggedIn && <Route path="/signin">
             <Login 
               onLogin={handleOnLogin}
-              loggedIn={loggedIn}/>
-          </Route>
-          <Route path="/signup">
+              loggedIn={loggedIn}
+              setInfoTooltipOpen={setInfoTooltipOpen}
+              setIsSuccess={setIsSuccess}
+              setMessage={setMessage}
+            />
+          </Route>}
+          {!loggedIn && <Route path="/signup">
             <Register 
               onRegister={handleOnRegister}
-              loggedIn={loggedIn}/>
-          </Route>
+              loggedIn={loggedIn}
+              setInfoTooltipOpen={setInfoTooltipOpen}
+              setIsSuccess={setIsSuccess}
+              setMessage={setMessage}
+            />
+          </Route>}
           <ProtectedRoute
             path="/movies"
             component={Movies}
             loggedIn={loggedIn}
+            savedMoviesList={savedMoviesList}
+            onClickSave={handleSaveMovie}
+            onClickDelete={handleDeleteMovie}
+            setInfoTooltipOpen={setInfoTooltipOpen}
+            setIsSuccess={setIsSuccess}
+            setMessage={setMessage}
+            user={currentUser}
           />
           <ProtectedRoute
             path="/saved-movies"
             component={SavedMovies}
             loggedIn={loggedIn}
+            savedMoviesList={savedMoviesList}
+            onClickDelete={handleDeleteMovie}
+            user={currentUser}
           />
           <ProtectedRoute
             path="/profile"
@@ -180,6 +252,7 @@ function App() {
             loggedIn={loggedIn}
             onUpdateUser={handleUpdateUser}
             onSignOut={handleOnSignOut}
+            user={currentUser}
           />
           <Route path="*">
             <NotFound />
@@ -192,7 +265,7 @@ function App() {
           message={message}/>
       </div>
     </CurrentUserContext.Provider>
-  );
+  ));
 }
 
 export default App;

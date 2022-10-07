@@ -1,15 +1,9 @@
-import { React, useState } from 'react';
+import React from 'react';
 
-function FilterCheckbox() {
-  const [checkbox, setActiveCheckbox] = useState(false);
-
-  function toggleCheckbox(e) {
-    setActiveCheckbox(!checkbox);
-  }
-
+function FilterCheckbox(props) {
   return (
     <div className="filtercheckbox">
-      <button className={`${checkbox ? "filtercheckbox__button" : "filtercheckbox__button_active"}`} type="button" onClick={toggleCheckbox}></button>
+      <button className={`${props.checkbox ? "filtercheckbox__button" : "filtercheckbox__button_active"}`} type="button" onClick={props.toggleCheckbox}></button>
       <p className="filtercheckbox__name">Короткометражки</p>
     </div>
 )}

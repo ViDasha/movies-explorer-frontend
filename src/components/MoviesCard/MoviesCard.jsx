@@ -1,30 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
 import { Route } from 'react-router-dom';
-import film from "../../images/film.jpg";
+import {BASE_NOMO_URL} from '../../config';
 
-function MoviesCard() {
-  const [isLiked, setIsLiked] = useState(false);
+function MoviesCard(props) {
 
-  function handleCardButton(e) {
-    setIsLiked(!isLiked);
+  function onLikeButton(e) {
+    props.handleLikeButton(props.movie);
   }
+
+  const durationFilmHoursMinutes = (duration) => {
+    return `${Math.floor(duration / 60)}ч ${duration % 60}м`;
+  }
+
+  const imageFilm = props.movie.image.url ? 
+    `${BASE_NOMO_URL + props.movie.image.url}`: props.movie.image;
+
+
+  const isLiked = props.savedMoviesList.find((sm) => sm.movieId === props.movie.id);
 
   return (
     <section className="moviescard">
       <div className="moviescard__container">
         <div className="moviescard__info">
           <div className="moviescard__description">
-            <h3 className="moviescard__title">33 слова о дизайне</h3>
-            <p className="moviescard__time">1ч 42м</p>
+            <h3 className="moviescard__title">{props.movie.nameRU}</h3>
+            <p className="moviescard__time">{durationFilmHoursMinutes(props.movie.duration)}</p>
           </div>
           <Route path="/movies">
-            <button className={`moviescard__button ${ isLiked ? "moviescard__like" : "moviescard__dislike"}`} onClick={handleCardButton} type="button"></button>
+            <button className={`moviescard__button ${ isLiked ? "moviescard__like" : "moviescard__dislike"}`} onClick={onLikeButton} type="button"></button>
           </Route>
           <Route path="/saved-movies">
-            <button className='moviescard__button moviescard__delete' onClick={handleCardButton} type="button"></button>
+            <button className='moviescard__button moviescard__delete' onClick={onLikeButton} type="button"></button>
           </Route>
         </div>
-        <img src={film} className="moviescard__img" alt="Белая машина, девушка с фотоаппаратом и ребята"/>
+        <a href={props.movie.trailerLink} target="blank">
+          <img src={imageFilm} className="moviescard__img" alt={props.movie.nameRU}/>
+        </a>
       </div>
     </section>
 )}

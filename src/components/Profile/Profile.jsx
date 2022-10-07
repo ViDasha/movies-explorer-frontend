@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Header from "../Header/Header";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 import checkValidition from "../../utils/Validation";
@@ -45,7 +44,7 @@ function Profile(props) {
         <div className="profile__item">
           <h3 className="profile__item-type">Имя</h3>
           <input 
-            className="profile__item-text"
+            className={`profile__item-text ${!checkIsValid && currentUser.name !== values.name && "profile__item-text_incorrect"}`}
             type="text"
             name="name"
             id="name"
@@ -60,7 +59,7 @@ function Profile(props) {
         <div className="profile__item">
           <h3 className="profile__item-type">E-mail</h3>
           <input
-            className="profile__item-text"
+            className={`profile__item-text ${!checkIsValid && currentUser.email !== values.email && "profile__item-text_incorrect"}`}
             type="email"
             name="email"
             id="email"
@@ -71,9 +70,7 @@ function Profile(props) {
         </div>
         <button className={`profile__button-edit ${!checkIsValid && "profile__button-edit_disabled"}`} type="submit" disabled={!checkIsValid}>Редактировать</button>
         </form>
-        <Link to="/">
-          <button className="profile__button-exit" type="button" onClick={props.onSignOut}>Выйти из аккаунта</button>
-        </Link>
+        <button className="profile__button-exit" type="button" onClick={props.onSignOut}>Выйти из аккаунта</button>
       </div>
     </section>
   );

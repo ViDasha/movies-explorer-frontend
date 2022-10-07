@@ -1,4 +1,4 @@
-import { regulars, errorMessages } from "../utils/constants";
+import { regulars, errorMessages, minLengthPassword, maxLengthPassword } from "../utils/constants";
 
 function checkValidition(name, value) {
   let isValid = true;
@@ -27,7 +27,7 @@ function checkValidition(name, value) {
         }
         break;
     default:
-      if (value.length < 8 || value.length > 40) {
+      if (value.length < minLengthPassword || value.length > maxLengthPassword) {
         errorMessage = errorMessages.incorrectPassword;
         isValid = false;
         break;

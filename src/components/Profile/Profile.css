@@ -60,6 +60,11 @@
   color: #000000;
 }
 
+.profile__item-text_incorrect {
+  color: red;
+  caret-color: #000;
+}
+
 .profile__item-text:focus {
   outline: 1px solid #6d6c79;
   border-radius: 3px;
