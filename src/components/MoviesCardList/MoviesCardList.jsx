@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { Route } from "react-router-dom";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import {initialCountFilms} from "../../utils/constants";
 
@@ -35,10 +34,8 @@ function MoviesCardList(props) {
           />
         )}
       </div>
-      <Route path="/movies">
         {props.moviesList.length > countFilms && 
           <button className="moviescardlist__button" type="button" onClick={handleClickMore}>Ещё</button>}
-      </Route>
     </section>
 )}
 

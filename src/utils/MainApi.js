@@ -78,17 +78,17 @@ class MainApi {
         'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
-        country: movie.country,
-        director: movie.director,
-        duration: movie.duration,
+        country: movie.country || 'Unknown',
+        director: movie.director || 'Unknown',
+        duration: movie.duration || 'Unknown',
         year: movie.year,
         description: movie.description,
         image: `https://api.nomoreparties.co/${movie.image.url}`,
-        trailerLink: movie.trailerLink,
+        trailerLink: movie.trailerLink || 'https://youtube.com',
         nameRU: movie.nameRU,
-        nameEN: movie.nameEN,
+        nameEN: movie.nameEN || 'Unknown',
         thumbnail: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`,
-        movieId: movie.id,
+        movieId: movie.id
       })
     })
     .then(this._renderResult);
