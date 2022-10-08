@@ -1,7 +1,7 @@
 import React from "react";
 import success from '../../images/success_icon.svg';
 import unsuccess from '../../images/unsuccess_icon.svg';
-
+import {errorMessages} from '../../utils/constants';
 
 function InfoTooltip(props) {
   return(
@@ -10,7 +10,7 @@ function InfoTooltip(props) {
         <div className="popup__container popup__container_type_info">
         <button onClick={props.onClose} type="button" aria-label="Закрыть" name="close" className="popup__close"></button>
         <img className="popup__icon" src={props.isSuccess ? success : unsuccess} alt="Успех или не успех"/>
-        <h2 className="popup__title">{props.message}</h2>
+        <h2 className="popup__title">{props.message || errorMessages.serverError}</h2>
         </div>
     </div>
   );

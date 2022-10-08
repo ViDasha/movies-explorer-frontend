@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect, useContext} from "react";
+import { MovieContext } from "../../contexts/MovieContext";
 import { Route } from 'react-router-dom';
 import {BASE_NOMO_URL} from '../../config';
 
 function MoviesCard(props) {
-
+  const { moviesState } = useContext(MovieContext);
   function onLikeButton(e) {
     props.handleLikeButton(props.movie);
   }
@@ -16,7 +17,9 @@ function MoviesCard(props) {
     `${BASE_NOMO_URL + props.movie.image.url}`: props.movie.image;
 
 
-  const isLiked = props.savedMoviesList.find((sm) => sm.movieId === props.movie.id);
+  const isLiked = moviesState.savedMovies.find((sm) => sm.movieId === props.movie.id);
+
+  useEffect(() => {}, [moviesState.savedMovies.length]);
 
   return (
     <section className="moviescard">

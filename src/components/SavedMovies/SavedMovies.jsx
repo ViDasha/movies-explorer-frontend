@@ -1,95 +1,104 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import Header from '../Header/Header.jsx';
 import SearchForm from '../SearchForm/SearchForm.jsx';
 import MoviesCardList from '../MoviesCardList/MoviesCardList.jsx';
 import Footer from '../Footer/Footer.jsx';
 import {maxDurationShortMovie} from '../../utils/constants';
+import { MovieContext } from '../../contexts/MovieContext.js';
+import mainApi from '../../utils/MainApi.js';
 
 function SavedMovies(props) {
-  const [shortMovies, setShortMovies] = useState(false);
-  const [isNotFound, setisNotFound] = useState(false);
-  const [inputValue, setInputValue] = useState(false);
-  const [showedMovies, setShowedMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState(props.savedMoviesList);
+  const { moviesState, setMoviesState } = useContext(MovieContext);
+  
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    mainApi.getMovies(jwt)
+      .then((savedMoviesData) => {
+        setMoviesState({
+          ...moviesState,
+          savedMovies: savedMoviesData,
+          savedMoviesCheckbox: false,
+          savedMoviesSearchText: "",
+          filteredSavedMovies: savedMoviesData,
+        });
+      })
+      .catch(console.log);
+  }, []);
+  
 
-  function filterMovies(movies, request, shortMoviesSwitch) {
-    const foundMovies = movies.filter((movie) => {
-        return movie.nameRU.toLowerCase().includes(request.toLowerCase())
+  function filterMovies(state) {
+    const { savedMoviesSearchText, savedMovies, savedMoviesCheckbox } = state;
+    const filteredSavedMovies = savedMovies.filter(
+      ({ nameRU, nameEN, duration }) => {
+        const nameFilm = `${nameRU}${nameEN}`.toLowerCase();
+        const chosenNameFilm = nameFilm.includes(savedMoviesSearchText.toLowerCase());
+        if (savedMoviesCheckbox) {
+          return chosenNameFilm && filterShortMovies(duration);
+        }
+        return chosenNameFilm;
+      }
+    );
+    return filteredSavedMovies;
+  }
+
+  function filterShortMovies(duration) {
+    return duration <= maxDurationShortMovie;
+  }
+
+  function onChangeInput(e) {
+    setMoviesState({
+      ...moviesState,
+      savedMoviesSearchText: e.target.value,
     });
-
-    if (shortMoviesSwitch) {
-        return filterShortMovies(foundMovies);
-    } else {
-        return foundMovies;
-    }
-}
-
-function filterShortMovies(movies) {
-    return movies.filter((movie) => movie.duration <= maxDurationShortMovie);
-}
-
-function handleSearchSubmit(inputValue) {
-    localStorage.setItem('savedMoviesSearch', inputValue);
-    const filteredSavedMovies = filterMovies(props.savedMoviesList, inputValue, shortMovies);
-    if (filteredSavedMovies.length === 0) {
-      setisNotFound(true);
-      setFilteredMovies([]);
-    } else {
-      setisNotFound(false);
-      setShowedMovies(filteredSavedMovies);
-      setFilteredMovies(filteredSavedMovies);
-      localStorage.setItem('savedMovies', JSON.stringify(props.savedMoviesList));
-    }
-}
-
-
-function toggleCheckbox() {
-    if (!shortMovies) {
-        setShortMovies(true);
-        localStorage.setItem('shortSavedMovies', true);
-        setShowedMovies(filterShortMovies(filteredMovies));
-        showedMovies.length === 0 ? setisNotFound(true) : setisNotFound(false);
-    } else {
-        setShortMovies(false);
-        localStorage.setItem('shortSavedMovies', false);
-        filteredMovies.length === 0 ? setisNotFound(true) : setisNotFound(false);
-        setShowedMovies(filteredMovies);
-    }
-}
-
-useEffect(() => {
-  if (localStorage.getItem('savedMoviesSearch')) {
-      setInputValue(localStorage.getItem('savedMoviesSearch'));
   }
-}, []);
 
-
-useEffect(() => {
-  if (localStorage.getItem('shortSavedMovies') === 'true') {
-      setShortMovies(true);
-      setShowedMovies(filterShortMovies(props.savedMoviesList));
-  } else {
-      setShortMovies(false);
-      setShowedMovies(props.savedMoviesList);
+  function handleSearchSubmit() {
+    const filteredSavedMovies = filterMovies(moviesState);
+    setMoviesState({
+      ...moviesState,
+      filteredSavedMovies,
+      notFoundSavedMovies: filteredSavedMovies.length === 0,
+    });
   }
-}, [props.savedMoviesList, showedMovies]);
+
+  function toggleCheckbox() {
+    const filteredSavedMovies = filterMovies({
+      ...moviesState,
+      savedMoviesCheckbox: !moviesState.savedMoviesCheckbox,
+    });
+    setMoviesState({
+      ...moviesState,
+      filteredSavedMovies,
+      savedMoviesCheckbox: !moviesState.savedMoviesCheckbox,
+      notFoundSavedMovies: filteredSavedMovies.length === 0,
+    });
+  }
+
+  useEffect(() => {
+    const filteredSavedMovies = filterMovies(moviesState);
+    setMoviesState({
+      ...moviesState,
+      filteredSavedMovies,
+      notFoundSavedMovies: filteredSavedMovies.length === 0,
+    });
+  }, [moviesState.savedMoviesCheckbox, moviesState.savedMovies.length]);
+
 
   return (
     <div className="savedmovies">
       <Header loggedIn={props.loggedIn}/>
       <main className="savedmovies__main">
-        <SearchForm 
-          shortMovies={shortMovies}
+        <SearchForm
+          onChangeInput={onChangeInput}
           onSubmit={handleSearchSubmit}
           toggleCheckbox={toggleCheckbox}
-          inputValue={inputValue}
-          checkbox={shortMovies}
+          inputValue={moviesState.savedMoviesSearchText}
+          checkbox={moviesState.savedMoviesCheckbox}
         />
         <MoviesCardList 
           handleLikeButton={props.onClickDelete}
-          savedMoviesList={props.savedMoviesList}
-          isNotFound={isNotFound}
-          moviesList={showedMovies}
+          isNotFound={moviesState.notFoundSavedMovies}
+          moviesList={moviesState.filteredSavedMovies}
         />
       </main>
       <Footer />

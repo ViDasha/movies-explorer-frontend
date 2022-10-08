@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import mainApi from "../../utils/MainApi";
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import {MovieContext} from '../../contexts/MovieContext';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -15,26 +16,25 @@ import { errorMessages, successMessages, nameErrors } from '../../utils/constant
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
+  const [moviesState, setMoviesState] = useState({
+    list: [],
+    filteredMovies: [],
+    moviesCheckbox: false,
+    moviesSearchText: "",
+    savedMovies: [],
+    filteredSavedMovies: [],
+    savedMoviesCheckbox: false,
+    savedMoviesSearchText: "",
+    notFoundMovies: false,
+    notFoundSavedMovies: false,
+  });
   const [loggedIn, setLoggedIn] = useState(false);
   const history = useHistory();
-  const [savedMoviesList, setSavedMoviesList] = useState([]);
   const [infoTooltipOpen, setInfoTooltipOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [message, setMessage] = useState("");
   const [successRequest, setSuccessRequest] = useState(false);
 
-  useEffect(() => {
-    const jwt = localStorage.getItem('jwt');
-    if (loggedIn) {
-      mainApi.getMovies(jwt)
-      .then((data) => {
-        setSavedMoviesList(data);
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    }
-  }, [loggedIn]);
 
   useEffect (() => {
     handleTokenCheck();
@@ -174,7 +174,7 @@ function App() {
     const jwt = localStorage.getItem('jwt');
     mainApi.saveMovie(movie, jwt)
     .then((newMovie) => {
-      setSavedMoviesList([newMovie, ...savedMoviesList]);
+      setMoviesState({...moviesState, savedMovies: [...moviesState.savedMovies, newMovie]});
     })
     .catch((err) => {
       setInfoTooltipOpen(true);
@@ -185,12 +185,12 @@ function App() {
   }
 
 function handleDeleteMovie(movie) {
-    const savedMovie = savedMoviesList.find((item) => item.movieId === movie.movieId);
+    const savedMovie = moviesState.savedMovies.find((item) => item.movieId === movie.id || item.movieId === movie.movieId);
     const jwt = localStorage.getItem('jwt');
     mainApi.deleteMovie(savedMovie._id, jwt)
       .then(() => {
-        const newMoviesList = savedMoviesList.filter((m) => m.movieId !== movie.movieId);
-          setSavedMoviesList(newMoviesList);
+        const newMoviesList =  moviesState.savedMovies.filter((m) => !(movie.id === m.movieId || movie.movieId === m.movieId));
+          setMoviesState({ ...moviesState, savedMovies: newMoviesList });
         })
       .catch((err) => {
         setInfoTooltipOpen(true);
@@ -202,6 +202,7 @@ function handleDeleteMovie(movie) {
 
   return (
     successRequest && (<CurrentUserContext.Provider value={currentUser}>
+      <MovieContext.Provider value={{ moviesState, setMoviesState }}>
       <div className="page">
         <Switch>
           <Route exact path="/">
@@ -230,21 +231,17 @@ function handleDeleteMovie(movie) {
             path="/movies"
             component={Movies}
             loggedIn={loggedIn}
-            savedMoviesList={savedMoviesList}
             onClickSave={handleSaveMovie}
             onClickDelete={handleDeleteMovie}
             setInfoTooltipOpen={setInfoTooltipOpen}
             setIsSuccess={setIsSuccess}
             setMessage={setMessage}
-            user={currentUser}
           />
           <ProtectedRoute
             path="/saved-movies"
             component={SavedMovies}
             loggedIn={loggedIn}
-            savedMoviesList={savedMoviesList}
             onClickDelete={handleDeleteMovie}
-            user={currentUser}
           />
           <ProtectedRoute
             path="/profile"
@@ -252,7 +249,6 @@ function handleDeleteMovie(movie) {
             loggedIn={loggedIn}
             onUpdateUser={handleUpdateUser}
             onSignOut={handleOnSignOut}
-            user={currentUser}
           />
           <Route path="*">
             <NotFound />
@@ -264,6 +260,7 @@ function handleDeleteMovie(movie) {
           isSuccess={isSuccess}
           message={message}/>
       </div>
+      </MovieContext.Provider>
     </CurrentUserContext.Provider>
   ));
 }
