@@ -1,4 +1,5 @@
 import {BASE_MAIN_URL} from "../config";
+import { regulars } from "./constants";
 
 class MainApi {
   constructor(options) {
@@ -84,8 +85,8 @@ class MainApi {
         year: movie.year,
         description: movie.description,
         image: `https://api.nomoreparties.co/${movie.image.url}`,
-        trailerLink: movie.trailerLink || 'https://youtube.com',
-        nameRU: movie.nameRU,
+        trailerLink: regulars.url.test(String(movie.trailerLink).toLowerCase()) ?  movie.trailerLink : 'https://youtube.com',
+        nameRU: movie.nameRU || 'Unknown',
         nameEN: movie.nameEN || 'Unknown',
         thumbnail: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`,
         movieId: movie.id
