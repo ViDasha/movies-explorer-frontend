@@ -2,6 +2,7 @@ import React, {useEffect, useContext} from "react";
 import { MovieContext } from "../../contexts/MovieContext";
 import { Route } from 'react-router-dom';
 import {BASE_NOMO_URL} from '../../config';
+import {regulars} from '../../utils/constants';
 
 function MoviesCard(props) {
   const { moviesState } = useContext(MovieContext);
@@ -36,7 +37,7 @@ function MoviesCard(props) {
             <button className='moviescard__button moviescard__delete' onClick={onLikeButton} type="button"></button>
           </Route>
         </div>
-        <a href={props.movie.trailerLink} target="blank">
+        <a href={regulars.url.test(String(props.movie.trailerLink).toLowerCase()) ?  props.movie.trailerLink : 'https://youtube.com'} target="blank">
           <img src={imageFilm} className="moviescard__img" alt={props.movie.nameRU}/>
         </a>
       </div>
