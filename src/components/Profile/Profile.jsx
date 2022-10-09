@@ -7,6 +7,7 @@ function Profile(props) {
   const currentUser = useContext(CurrentUserContext);
   const [values, setValues] = useState({ name: "", email: "" });
   const [isValids, setIsValid] = useState({ name: true, email: true });
+  const [formSubmission, setFormSubmission] = useState(false);
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -27,14 +28,22 @@ function Profile(props) {
   const handleSubmit = (e) => {
     // Запрещаем браузеру переходить по адресу формы
     e.preventDefault();
-
     // Передаём значения управляемых компонентов во внешний обработчик
     props.onUpdateUser({
       name: values.name,
       email: values.email,
-    });  
+    }); 
+    setValues({
+      name: currentUser.name,
+      email: currentUser.email
+    });
+    setFormSubmission(false);
   }
 
+  const handleClickEdit = () => {
+    setFormSubmission(true);
+  }
+  
   return (
     <section className="profile">
       <Header loggedIn={props.loggedIn}/>
@@ -53,6 +62,7 @@ function Profile(props) {
             required
             onChange={handleChange}
             value={values.name || ''}
+            disabled={formSubmission}
           />
         </div>
         <div className="profile__border" />
@@ -66,9 +76,14 @@ function Profile(props) {
             required
             onChange={handleChange}
             value={values.email || ''}
+            disabled={formSubmission}
           />
         </div>
-        <button className={`profile__button-edit ${!checkIsValid && "profile__button-edit_disabled"}`} type="submit" disabled={!checkIsValid}>Редактировать</button>
+        <button className={`profile__button-edit ${!checkIsValid && "profile__button-edit_disabled"}`} 
+          type="submit" 
+          disabled={!checkIsValid}
+          onClick={handleClickEdit}
+        >Редактировать</button>
         </form>
         <button className="profile__button-exit" type="button" onClick={props.onSignOut}>Выйти из аккаунта</button>
       </div>

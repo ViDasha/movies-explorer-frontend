@@ -37,6 +37,10 @@ function App() {
 
 
   useEffect (() => {
+    const moviesStateStorage = JSON.parse(localStorage.getItem("moviesState"));
+    if (moviesStateStorage) {
+      setMoviesState(moviesStateStorage);
+    }
     handleTokenCheck();
   }, []);
 
@@ -141,8 +145,20 @@ function App() {
   }
 
   function handleOnSignOut() {
-    localStorage.removeItem('jwt');
+    setLoggedIn(false);
     setCurrentUser({});
+    setMoviesState(   
+      { list: [],
+      filteredMovies: [],
+      moviesCheckbox: false,
+      moviesSearchText: "",
+      savedMovies: [],
+      filteredSavedMovies: [],
+      savedMoviesCheckbox: false,
+      savedMoviesSearchText: "",
+      notFoundMovies: false,
+      notFoundSavedMovies: false}
+    );
     setLoggedIn(false);
     localStorage.clear();
     history.push('/');
@@ -182,6 +198,7 @@ function App() {
       setMessage(errorMessages.serverError);
       console.log(err); // выведем ошибку в консоль
     })
+    localStorage.setItem("moviesState", JSON.stringify(moviesState));
   }
 
 function handleDeleteMovie(movie) {
@@ -198,6 +215,7 @@ function handleDeleteMovie(movie) {
         setMessage(errorMessages.serverError);
         console.log(err); // выведем ошибку в консоль
       })
+      localStorage.setItem("moviesState", JSON.stringify(moviesState));
 }
 
   return (
@@ -242,6 +260,9 @@ function handleDeleteMovie(movie) {
             component={SavedMovies}
             loggedIn={loggedIn}
             onClickDelete={handleDeleteMovie}
+            setInfoTooltipOpen={setInfoTooltipOpen}
+            setIsSuccess={setIsSuccess}
+            setMessage={setMessage}
           />
           <ProtectedRoute
             path="/profile"

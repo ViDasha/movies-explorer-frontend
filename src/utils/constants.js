@@ -20,7 +20,8 @@ export const errorMessages = {
     incorrectToken: "Переданный токен некорректен",
     serverError: "Что-то пошло не так. Попробуйте еще раз!",
     connectionProblem: "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз",
-    userAlreadyExists: "Такой пользователь уже существует"
+    userAlreadyExists: "Такой пользователь уже существует",
+    enterKeyword: "Нужно ввести ключевое слово"
   };
 
 export const successMessages = {

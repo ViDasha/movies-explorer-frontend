@@ -94,6 +94,9 @@ function SavedMovies(props) {
           toggleCheckbox={toggleCheckbox}
           inputValue={moviesState.savedMoviesSearchText}
           checkbox={moviesState.savedMoviesCheckbox}
+          setInfoTooltipOpen={props.setInfoTooltipOpen}
+          setIsSuccess={props.setIsSuccess}
+          setMessage={props.setMessage}
         />
         <MoviesCardList 
           handleLikeButton={props.onClickDelete}

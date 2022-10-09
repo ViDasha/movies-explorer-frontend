@@ -34,6 +34,7 @@ function Movies(props) {
       notFoundMovies: filteredMovies.length === 0,
     });
     setIsDataLoading(false);
+    localStorage.setItem("moviesState", JSON.stringify(moviesState));
   };
 
   function filterShortMovies(duration) {
@@ -41,23 +42,27 @@ function Movies(props) {
   }
 
   function handleSearchSubmit() {
-    setIsDataLoading(true);
-    const jwt = localStorage.getItem('jwt');
-    moviesApi.getMovies(jwt)
-      .then((res) => {
-        setMoviesState({ ...moviesState, list: res });
-        setIsDataLoading(false);
-        filterMovies();
-      })
-      .catch((err) => {
-        props.setInfoTooltipOpen(true);
-        props.setIsSuccess(false);
-        props.setMessage(errorMessages.connectionProblem);
-        console.log(err);
-      })
-      .finally(() => {
-        setIsDataLoading(false);
-      });
+    if (moviesState.list.length !== 0) {
+      filterMovies();
+    } else {
+      setIsDataLoading(true);
+      const jwt = localStorage.getItem('jwt');
+      moviesApi.getMovies(jwt)
+        .then((res) => {
+          setMoviesState({ ...moviesState, list: res });
+          setIsDataLoading(false);
+          filterMovies();
+        })
+        .catch((err) => {
+          props.setInfoTooltipOpen(true);
+          props.setIsSuccess(false);
+          props.setMessage(errorMessages.connectionProblem);
+          console.log(err);
+        })
+        .finally(() => {
+          setIsDataLoading(false);
+        });
+    }
   }
 
   function onChangeInput(e) {
@@ -86,11 +91,6 @@ function Movies(props) {
   }
 
   useEffect(() => {
-    filterMovies();
-  }, [moviesState.moviesCheckbox, moviesState.list.length, moviesState.savedMovies.length]);
-
-
-  useEffect(() => {
     if (moviesState.list.length === 0) {
       const jwt = localStorage.getItem('jwt');
       moviesApi.getMovies(jwt)
@@ -107,6 +107,11 @@ function Movies(props) {
     }
   }, []);
 
+ 
+  useEffect(() => {
+    filterMovies();
+  }, [moviesState.moviesCheckbox, moviesState.list.length, moviesState.savedMovies.length]);
+
 
   return (
     <div className="movies">
@@ -118,6 +123,9 @@ function Movies(props) {
           toggleCheckbox={toggleCheckbox}
           inputValue={moviesState.moviesSearchText}
           checkbox={moviesState.moviesCheckbox}
+          setInfoTooltipOpen={props.setInfoTooltipOpen}
+          setIsSuccess={props.setIsSuccess}
+          setMessage={props.setMessage}
         />
         {isDataLoading ? <Prealoder /> : 
           <MoviesCardList 
