@@ -46,6 +46,7 @@
 
 .login__item_type_error {
   color: #FF3055;
+  caret-color: #000;
 }
 
 .login__item-error {
@@ -80,6 +81,14 @@
 
 .login__button-save_type_register {
   margin-top: 69px;
+}
+
+.login__button-save_disabled {
+  background-color: #6d6c79;
+}
+
+.login__button-save_disabled:hover {
+  opacity: 1;
 }
 
 .login__signin {

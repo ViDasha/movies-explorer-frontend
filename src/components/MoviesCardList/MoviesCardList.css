@@ -30,6 +30,14 @@
     opacity: 0.6;
   }
 
+.moviescardlist__text {
+  font-weight: 400;
+  font-size: 80px;
+  line-height: 97px;
+  text-align: center;
+  color: #838383;
+}
+
 @media screen and (max-width: 780px) {
   .moviescardlist {
     margin: 70px 30px 80px;
